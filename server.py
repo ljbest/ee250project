@@ -26,7 +26,6 @@ def connect():
     if request.is_json:
         data = request.get_json()
         name = data
-        print(f"name : {name}")
         if name not in cameras:
             cameras[name] = request.remote_addr
             return f"register camera {name} with ip {cameras[name]}", 200
@@ -57,7 +56,6 @@ def print_cameras():
 def get_camera_image():
     if request.is_json:
         data = request.get_json()
-        print(data)
         name = data["camera_name"]+'.jpg';
         with open(name, 'wb') as file:
             file.write(base64.decodebytes(bytes(data["image"][23:],'utf-8')))
