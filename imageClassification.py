@@ -8,19 +8,27 @@ def detect_people(image_path: str):
     Detects people in an image using YOLOv8.
     Outputs the count and location of each person found.
     """
-  
+
+    # ── Load model ──────────────────────────────────────────────────────────
+    print("Loading YOLO model...")
     model = YOLO("yolov8n.pt")  # downloads automatically on first run
 
+    # ── Load image ──────────────────────────────────────────────────────────
     image = cv2.imread(image_path)
     if image is None:
+        print("=" * 50)
+        print(f"❌ Error: Could not load image from '{image_path}'")
+        print("Check the filename is correct and the file exists.")
+        print("=" * 50)
         sys.exit(1)
 
     img_height, img_width = image.shape[:2]
     print(f"Image size: {img_width}x{img_height} px\n")
 
-   
+    # ── Run detection ────────────────────────────────────────────────────────
     results = model(image, verbose=False)
 
+    # ── Filter for people only (YOLO class 0 = person) ──────────────────────
     people = []
     for result in results:
         for box in result.boxes:
@@ -38,9 +46,11 @@ def detect_people(image_path: str):
                         "center_y": (y1 + y2) // 2,
                     })
 
+    # ── Print results ────────────────────────────────────────────────────────
     print("=" * 50)
     if len(people) == 0:
-        print("No people detected in the image.")
+        print("✅ Detection complete.")
+        print("👤 No people found in the image.")
         print("=" * 50)
         return
 
@@ -127,4 +137,5 @@ if __name__ == "__main__":
         print("Example: python detect_people.py photo.jpg")
         sys.exit(1)
 
+    detect_people(sys.argv[1])
     detect_people(sys.argv[1])
