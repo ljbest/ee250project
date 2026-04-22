@@ -19,7 +19,7 @@
     }
     
     async function sendName(user) {
-        user = await prompt("please type in the a name for this camaera");
+        
         console.log(user)
         const response = await fetch("/connect", {
             method: "POST",
@@ -40,7 +40,7 @@
         sendRemoveName()
     };
     window.addEventListener("beforeunload", before_unload_listener);
-
+    user = prompt("please type in the a name for this camaera");
     sendName();
 
     
