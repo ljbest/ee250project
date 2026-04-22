@@ -1,0 +1,85 @@
+<video id="video" autoplay playsinline></video>
+<script>
+    user = null;
+    async function sendRemoveName() {
+        if(user == null)
+        {
+            return;
+        }
+        const response = await fetch("/disconnect", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        });
+
+        const data = await response.json();
+        console.log(data);
+    }
+    
+    async function sendName(user) {
+        user = await prompt("please type in the a name for this camaera");
+        console.log(user)
+        const response = await fetch("/connect", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        });
+
+        const data = await response.json();
+        console.log(data);
+    }
+
+    
+    
+    
+    const before_unload_listener = (event) => {
+        sendRemoveName()
+    };
+    window.addEventListener("beforeunload", before_unload_listener);
+
+    sendName();
+
+    
+    const video = document.getElementById('video');
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {video.srcObject =stream;}).catch(err => {console.error("Error accessing camera: ", err);});
+    
+    
+    async function send_image_data() {
+        let canvas = document.createElement('canvas');
+        let video = document.getElementById('video');
+
+        canvas.width = 640;
+        canvas.height = 480;
+
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage( video, 0, 0, canvas.width, canvas.height );
+
+        const img    = canvas.toDataURL('image/jpeg')
+
+        const payload = {
+            
+            image: img, // The base64 string
+            timestamp: new Date().toISOString(),
+            camera_name: user
+        };
+        
+        
+        const response = await fetch("/camera/get", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        console.log(data);
+    }
+    setInterval(send_image_data,2000);
+
+
+</script>
