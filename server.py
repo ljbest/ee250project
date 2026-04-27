@@ -170,7 +170,7 @@ def video_feed():
     return render_template('camera.html')
 @app.route('/camera/list')
 def print_cameras():
-#    print(cameras.items())
+
     active_cameras = {key:"static/../detected_people_"+value["name"] for key, value in cameras.items() if value["people"] >= 1}
 
     return render_template('camera_list.html', camera_list=active_cameras)
