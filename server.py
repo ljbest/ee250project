@@ -145,23 +145,6 @@ def get_region(cx: int, cy: int, img_w: int, img_h: int) -> str:
     return f"{v_pos}-{h_pos}"
 
 
-# ── Entry point ──────────────────────────────────────────────────────────────
-#if __name__ == "__main__":
-#    if len(sys.argv) < 2:
-#        print("Usage: python detect_people.py <image_path>")
-#        print("Example: python detect_people.py photo.jpg")
-#        sys.exit(1)
-#
-#    detect_people(sys.argv[1])
-#    detect_people(sys.argv[1])
-
-
-
-
-
-
-
-
 app = Flask(__name__,template_folder='./')
 socketio = SocketIO(app, logge=True)
 
