@@ -1,8 +1,15 @@
-<table>
+
   {% for key, value in camera_list.items() %}
-  <tr>
-    <td>{{ key }}</td>
-    <td>{{ value }}</td>
-  </tr>
+<!--  <tr>-->
+<!--    <td>{{ key }}</td>-->
+<!--    <td>{{ value }}</td>-->
+<!--  </tr>-->
+    <img src="{{ url_for('static',filename=value)}}">
+<!--    <img src={{value}} alt={{key}}>-->
   {% endfor %}
-</table>
+<!--  <img src="../detected_people_cam0.jpg" alt="cam0">-->
+<script>
+    setInterval(() => {
+      location.reload();
+    }, 1000);
+</script>
